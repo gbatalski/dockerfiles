@@ -21,8 +21,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq && \
 RUN echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list.d/dotdeb.org.list && \
   echo "deb-src http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list.d/dotdeb.org.list && \
   wget -O- http://www.dotdeb.org/dotdeb.gpg | apt-key add - && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  php5-cli php5 php5-mcrypt php5-curl php5-pgsql postgresql-contrib phppgadmin && \
+  echo "deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main" > /etc/apt/sources.list.d/postgresql.list && \
+  wget -O- https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \ 
+  DEBIAN_FRONTEND=noninteractive apt-get update -qq && apt-get install -y \
+  php5-cli php5 php5-mcrypt php5-curl php5-pgsql postgresql-contrib-9.6 phppgadmin && \
   curl -sS https://getcomposer.org/installer | php && \
   mv composer.phar /usr/local/bin/composer && \
   sed -i 's/;include_path = ".:\/usr\/share\/php"/include_path = ".:\/var\/www\/library"/g' /etc/php5/cli/php.ini && \
